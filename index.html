@@ -29,11 +29,8 @@
             <button class="update-btn" onclick="addImagesToThePage()">Update</button>
         </div>
     </div>
-    <!-- <main class="main-container">
-    </main> -->
 
     <script>
-        // const mainContainer = document.querySelector(".main-container");
         const imageNameInput = document.querySelector(".image-name-input");
         const imageLinkInput = document.querySelector(".image-link-input");
         const sendBtn = document.querySelector(".send-btn");
@@ -42,21 +39,25 @@
         const apiURL = "https://66e8071cb17821a9d9db0a34.mockapi.io/forests/images/"
 
         sendBtn.addEventListener("click", () => {
-            fetch(apiURL, {
-                method: 'POST',
-                body: JSON.stringify({
-                    imageTitle: imageNameInput.value,
-                    imageLink: imageLinkInput.value
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            })
-                .then((response) => {
-                    response.json()
-                    addImagesToThePage()
+            if (imageNameInput.value !== "" && imageLinkInput.value !== "") {
+
+
+                fetch(apiURL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        imageTitle: imageNameInput.value,
+                        imageLink: imageLinkInput.value
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
                 })
-                .catch((error) => console.error('Error:', error));
+                    .then((response) => {
+                        response.json()
+                        addImagesToThePage()
+                    })
+                    .catch((error) => console.error('Error:', error));
+            }
         });
 
         async function addImagesToThePage() {

@@ -158,10 +158,18 @@ input:focus {
     .main-container {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    input {
+        width: 300px;
+    }
 }
 
 @media (min-width:858px) {
     .main-container {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    input {
+        width: 400px;
     }
 }
