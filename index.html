@@ -10,8 +10,16 @@
 
 <body>
     <header class="header">
+        <div class="login-container">
+            <label for="">
+                Name
+                <input type="text" class="login-input">
+            </label>
+            <button onclick="login()" class="login">Login</button>
+        </div>
+        <h1 class="user-greeting"></h1>
         <h1 class="main-title">Our Forest</h1>
-        <p class="sub-title">Explore our Beautiful, and Stunning Nature</p>
+        <p class="sub-title">Explore our Beautiful, and Stunning Forrest</p>
     </header>
     <div class="sending-container">
         <label for="
@@ -31,6 +39,23 @@
     </div>
 
     <script>
+        const loginContainer = document.querySelector(".login-container");
+        const loginInput = document.querySelector(".login-input");
+        const userGreeting = document.querySelector(".user-greeting");
+        const loginBtn = document.querySelector(".login");
+
+        function login() {
+            if (loginContainer) {
+                loginContainer.remove();
+            }
+
+            const greeting = `Hi, ${loginInput.value}!`;
+            if (userGreeting) {
+                userGreeting.innerText = greeting;
+            }
+        }
+
+
         const imageNameInput = document.querySelector(".image-name-input");
         const imageLinkInput = document.querySelector(".image-link-input");
         const sendBtn = document.querySelector(".send-btn");
