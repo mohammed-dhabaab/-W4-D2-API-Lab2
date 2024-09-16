@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">
+        <h1 class="main-title">Our Forest</h1>
+        <p class="sub-title">Explore our Beautiful, and Stunning Nature</p>
+    </header>
+    <div class="sending-container">
+        <label for="
+        ">
+            Image Name
+            <input type="text" class="image-name-input">
+        </label>
+        <label for="">
+            Image URL
+
+            <input type="text" class="image-link-input">
+        </label>
+        <div class="buttons-container">
+            <button class="send-btn">Send</button>
+            <button class="update-btn" onclick="addImagesToThePage()">Update</button>
+        </div>
+    </div>
+    <!-- <main class="main-container">
+    </main> -->
+
+    <script>
+        // const mainContainer = document.querySelector(".main-container");
+        const imageNameInput = document.querySelector(".image-name-input");
+        const imageLinkInput = document.querySelector(".image-link-input");
+        const sendBtn = document.querySelector(".send-btn");
+        const updateBtn = document.querySelector(".update-btn");
+
+        const apiURL = "https://66e8071cb17821a9d9db0a34.mockapi.io/forests/images/"
+
+        sendBtn.addEventListener("click", () => {
+            fetch(apiURL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    imageTitle: imageNameInput.value,
+                    imageLink: imageLinkInput.value
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+                .then((response) => {
+                    response.json()
+                    addImagesToThePage()
+                })
+                .catch((error) => console.error('Error:', error));
+        });
+
+        async function addImagesToThePage() {
+            try {
+                const response = await fetch(apiURL);
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch: ${data.status}`);
+                }
+                if (data) {
+                    if (document.querySelector(".main-container")) {
+                        document.querySelector(".main-container").remove()
+                    }
+                    const mainContainer = document.createElement("main")
+                    mainContainer.classList.add("main-container")
+                    data.map(image => {
+                        const cardContainer = document.createElement("div");
+                        cardContainer.classList.add("card-container");
+
+                        const cardImageContainer = document.createElement("div");
+                        cardImageContainer.classList.add("card-container-image");
+
+                        const cardImage = document.createElement("img");
+                        cardImage.classList.add("card-image");
+                        cardImage.src = image.imageLink;
+
+                        const imageTitle = document.createElement("h2");
+                        imageTitle.classList.add("image-title");
+                        imageTitle.innerText = image.imageTitle;
+
+                        const cardTextContainer = document.createElement("div");
+                        cardTextContainer.classList.add("card-text-container");
+
+                        const deleteBtn = document.createElement("button")
+                        deleteBtn.classList.add("delete-btn");
+                        deleteBtn.innerText = "Delete"
+                        deleteBtn.setAttribute("onclick", `deleteImage(${image.id})`)
+
+                        // Appending
+                        cardTextContainer.appendChild(imageTitle);
+                        cardTextContainer.appendChild(deleteBtn);
+                        cardImageContainer.appendChild(cardImage);
+                        cardContainer.appendChild(cardImageContainer);
+                        cardContainer.appendChild(cardTextContainer);
+
+                        mainContainer.appendChild(cardContainer);
+                    })
+                    document.body.appendChild(mainContainer)
+                }
+
+
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function deleteImage(imageID) {
+            try {
+                const response = await fetch(`${apiURL}/${imageID}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete the image');
+                }
+
+                await addImagesToThePage();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        addImagesToThePage()
+    </script>
+</body>
+
+</html>
